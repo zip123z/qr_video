@@ -29,7 +29,7 @@
     <h2>掃描 QR Code 播放 YouTube 影片</h2>
     <div id="reader"></div>
     <div id="video-container">
-        <iframe id="youtube-video" src="" allowfullscreen></iframe>
+        <iframe id="youtube-video" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
 
     <script>
@@ -46,7 +46,7 @@
             if (isYouTubeURL(decodedText)) {
                 const videoId = extractYouTubeID(decodedText);
                 if (videoId) {
-                    document.getElementById("youtube-video").src = `https://www.youtube.com/embed/${videoId}`;
+                    document.getElementById("youtube-video").src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=1`;
                 } else {
                     alert("無效的 YouTube 連結！");
                 }
