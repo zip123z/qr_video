@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code 掃描器 - 影片播放</title>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        #reader {
+            width: 300px;
+            margin: auto;
+        }
+        iframe {
+            width: 100%;
+            max-width: 560px;
+            height: 315px;
+            margin-top: 20px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>掃描 QR Code 播放 YouTube 影片</h2>
+    <div id="reader"></div>
+    <div id="video-container">
+        <iframe id="youtube-video" src="" allowfullscreen></iframe>
+    </div>
+
+    <script>
+        function isYouTubeURL(url) {
+            return url.includes("youtube.com/watch") || url.includes("youtu.be/");
+        }
+
+        function extractYouTubeID(url) {
+            const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+            return match ? match[1] : null;
+        }
+
+        function onScanSuccess(decodedText) {
+            if (isYouTubeURL(decodedText)) {
+                const videoId = extractYouTubeID(decodedText);
+                if (videoId) {
+                    document.getElementById("youtube-video").src = `https://www.youtube.com/embed/${videoId}`;
+                } else {
+                    alert("無效的 YouTube 連結！");
+                }
+            } else {
+                alert("請掃描 YouTube 影片的 QR Code！");
+            }
+        }
+
+        new Html5Qrcode("reader").start(
+            { facingMode: "environment" }, 
+            { fps: 10, qrbox: 250 },
+            onScanSuccess
+        );
+    </script>
+
+</body>
+</html>
